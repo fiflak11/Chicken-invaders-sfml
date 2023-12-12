@@ -1,7 +1,8 @@
 #include "ship.h"
 #include "SFML/Graphics.hpp"
+#include <iostream>
 
-Ship::Ship(int h, int d, int s, int mS, int acc, std::string c, int wid, int hei): hp(h), dmg(d), speed(s), maxSpeed(mS), acceleration(acc), color(c), screenHeight(hei), screenWidth(wid){
+Ship::Ship(int h, int d, float s, float mS, float acc, int wid, int hei): hp(h), dmg(d), speed(s), maxSpeed(mS), acceleration(acc), screenHeight(hei), screenWidth(wid){
     ship.setSize(sf::Vector2f(80,80));
     ship.setOrigin(40,80);
     ship.setFillColor(sf::Color::Green);
@@ -10,24 +11,21 @@ Ship::Ship(int h, int d, int s, int mS, int acc, std::string c, int wid, int hei
 sf::RectangleShape Ship::getShipRect(){
     return this->ship;
 }
-void Ship::moveShip(){
-    sf::Vector2f pos = this->ship.getPosition();
-    ship.setPosition(pos.x + speed, pos.y);
-    if(abs(speed)<acceleration)
-        speed=0;
-    else if(speed>0)
-        speed-=acceleration/2;
-    else if(speed<0)
-        speed+=acceleration/2;
-}
-void Ship::speedUpShip(bool direction){
-    if(direction)
+void Ship::shipMove(char side){
+    if(side=='r' && speed+acceleration<maxSpeed)
         speed+=acceleration;
-    else
+    else if(side=='l' && speed-acceleration>-maxSpeed)
         speed-=acceleration;
-    if(abs(speed)>maxSpeed) //if ship move faster than maxSpeed, set speed at maximum(right) or minimum(left)
+    else{
         if(speed>0)
-            speed=maxSpeed;
-        else
-            speed=-maxSpeed;
+            speed-=acceleration/2;
+        else if(speed<0)
+            speed+=acceleration/2;
+        if(speed<acceleration && speed>-acceleration)
+            speed=0;
+    }
+    sf::Vector2f pos = this->ship.getPosition();
+    if(pos.x<ship.getSize().x/2 || pos.x>screenWidth-ship.getSize().x/2)
+        speed=-speed;
+    ship.setPosition(pos.x + speed, pos.y);
 }

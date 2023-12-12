@@ -7,8 +7,8 @@ Game::Game(int w, int h, int diff): width(w), height(h), difficulty(diff){
 }
 void Game::start(){
     sf::RenderWindow window(sf::VideoMode(this->width, this->height), "Chicken Invaders");
-    //window.setFramerateLimit(60);
-    Ship ship(0,0,0,20,4,"green",this->width,this->height);
+    window.setFramerateLimit(60);
+    Ship ship(0,0,0.0,20.0,0.5,this->width,this->height);
     while (window.isOpen())
     {
         sf::Event event;
@@ -16,17 +16,16 @@ void Game::start(){
         {
             if (event.type == sf::Event::Closed)
                 window.close();
-            if (event.key.code==sf::Keyboard::D && event.type==sf::Event::KeyPressed)
-                ship.speedUpShip(true);
-            else if (event.key.code==sf::Keyboard::A && event.type==sf::Event::KeyPressed)
-                ship.speedUpShip(false);
         }
+        if (sf::Keyboard::isKeyPressed(sf::Keyboard::D))
+            ship.shipMove('r');
+        else if (sf::Keyboard::isKeyPressed(sf::Keyboard::A))
+            ship.shipMove('l');
+        else
+            ship.shipMove('n');
 
         window.clear();
-
-        ship.moveShip();
         window.draw(ship.getShipRect());
-
         window.display();
     }
 }

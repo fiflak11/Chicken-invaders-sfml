@@ -1,16 +1,15 @@
 #ifndef SHIP_H
 #define SHIP_H
 #include "SFML/Graphics.hpp"
-#include <string>
 
 class Ship{
-    int hp, dmg, speed, maxSpeed, acceleration, screenWidth, screenHeight;
-    std::string color;
+    int hp, dmg;
+    float speed, maxSpeed, acceleration;
+    const int screenWidth, screenHeight;
     sf::RectangleShape ship;
 public:
-    Ship(int h, int d, int s, int mS, int acc, std::string c, int wid, int hei);
+    Ship(int, int, float, float, float, int, int);
     sf::RectangleShape getShipRect();
-    void moveShip();
-    void speedUpShip(bool direct);// false-left, true-right
+    void shipMove(char side);// r-right l-left n-just slow down ship
 };
 #endif
