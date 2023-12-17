@@ -5,9 +5,11 @@
 class Bullet{
     sf::RectangleShape bullet;
 public:
-    const int dmg;
-    const float speed;
+    int dmg;
+    float speed;
     Bullet(int, float, sf::Vector2f);
-    sf::RectangleShape& getBulletRect();
+    ~Bullet();
+    sf::RectangleShape getBulletRect();
+    void bulletMove();
 };
 #endif
